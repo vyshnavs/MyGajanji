@@ -1,11 +1,14 @@
+//this file is used to connect to the MongoDB database using Mongoose
 const mongoose = require('mongoose');
+
 const connectDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("MongoDB Connected");
-  } catch (error) {
-    console.error(error);
+    console.log("MongoDB connected");
+  } catch (err) {
+    console.error(err);
     process.exit(1);
   }
 };
+
 module.exports = connectDB;
