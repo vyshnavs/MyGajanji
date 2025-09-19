@@ -29,3 +29,24 @@ Thumbs.db
 # Cache
 frontend/.cache/
 backend/.cache/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Virtual environments
+venv/
+rasaenv/
+.env/
+
+# Logs and temp files
+logs/
+*.log
+
+# (Optional) If you ONLY want to upload specific trained models:
+# models/
+# ↑ comment out or remove this line so trained models are included
+
+# Rasa results & cache
+results/
+.cache/

@@ -1,12 +1,24 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "../pages/HomePage";
+import Login from "../pages/login";
+import Register from "../pages/register";
+import Chatbot from "../pages/ChatBot";
+import ProtectedRoute from "./ProtectedRoutes";
 function AppRouter() {
 return (
     <Router>
         <Routes>
-            {/* Add routes here */}
+            {/* public routes */}
             <Route path="/" element={<HomePage/>} />
+            <Route path="/login" element={<Login />} />
+             <Route path="/register" element={<Register />} />
+            <Route path="/chatbot" element={<Chatbot />} />
+            
+             {/* Protected Routes */}
+            
         </Routes>
+         
+        
     </Router>
 );
 }

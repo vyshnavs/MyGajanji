@@ -1,17 +1,30 @@
-//protected route middleware for authentication
-const jwt = require('jsonwebtoken');
+// middleware/auth.js
+const jwt = require("jsonwebtoken");
 
-const authMiddleware = (req, res, next) => {
-  const token = req.cookies.token;
-  if (!token) return res.status(401).json({ msg: 'Unauthorized' });
+module.exports = (req, res, next) => {
+  const auth = req.headers.authorization || "";
+  const [scheme, token] = auth.split(" ");
+
+  if (!token || !/^Bearer$/i.test(scheme)) {
+    return res.status(401).json({ error: "Missing token" });
+  }
 
   try {
+    // Verify and decode the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded.id;
-    next();
-  } catch {
-    return res.status(401).json({ msg: 'Invalid token' });
+    
+    // Extract user details from decoded payload
+    // Ensure these fields exist in the token payload at login time
+    req.user = {
+      _id: decoded._id,
+      email: decoded.email,
+      name: decoded.name,
+      roles: decoded.roles || [],
+      // add any other claims you sign, e.g., plan, orgId, etc.
+    };
+
+    return next();
+  } catch (err) {
+    return res.status(401).json({ error: "Invalid or expired token" });
   }
 };
-
-module.exports = authMiddleware;

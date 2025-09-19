@@ -9,12 +9,14 @@ exports.register = async (req, res) => {
   try {
     const existing = await User.findOne({ email });
     if (existing) {
-      return res.status(400).json({ error: 'User already exists' });
+      return res.status(400).json({
+        success: false,
+        message: 'Email Already exists'
+      });
     }
 
     const hashed = await bcrypt.hash(password, 10);
 
-    // 🔐 Store full data in token
     const verificationToken = jwt.sign(
       { name, email, password: hashed },
       process.env.JWT_SECRET,
@@ -22,14 +24,21 @@ exports.register = async (req, res) => {
     );
 
     const link = `http://localhost:5000/api/auth/verify/${verificationToken}`;
-    await sendEmail(email, 'Verify your email', `Click to verify: ${link}`);
+    await sendEmail(email, 'Account Verification', `This is from MyGajanji your online money management platform. Click to verify account creation: ${link}`);
 
-    res.json({ message: 'Verification email sent. Please check your inbox.' });
+    res.json({
+      success: true,
+      message: 'Verification email sent. Please check your inbox.'
+    });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Server error during registration.' });
+    res.status(500).json({
+      success: false,
+      message: 'Server error during registration.'
+    });
   }
 };
+
 
 exports.verify = async (req, res) => {
   try {
@@ -56,18 +65,26 @@ exports.verify = async (req, res) => {
 exports.login = async (req, res) => {
   
   const { email, password } = req.body;
-console.log(email);
+
   const user = await User.findOne({ email });
   
-  if (!user) return res.status(404).send('User not found');
+ if (!user) return res.status(404).send('User not found');
   if (!user.isVerified) return res.status(403).send('Email not verified');
 
   const match = await bcrypt.compare(password, user.password);
   if (!match) return res.status(400).send('Incorrect password');
 
-  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+  const token = jwt.sign({ id: user._id,name: user.name, email: user.email,picture: user.picture }, process.env.JWT_SECRET);
   res.cookie('token', token, { httpOnly: true });
-  res.send('Login successful');
+  res.json({
+    message: 'Login successful',
+    token,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+    }
+  });
 };
 
 exports.logout = (req, res) => {
