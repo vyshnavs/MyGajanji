@@ -1,3 +1,4 @@
+// App.jsx (simplified)
 import AppRouter from "./router/AppRouter";
 
 function App() {
@@ -9,4 +10,3 @@ function App() {
 }
 
 export default App;
-

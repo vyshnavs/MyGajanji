@@ -1,115 +1,125 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import api from "../api/connection";
-import { GoogleLogin } from "@react-oauth/google";
-import { motion } from "framer-motion";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const Login = () => {
+const api = axios.create({
+  baseURL: "http://localhost:5000",
+});
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) config.headers.Authorization = `Bearer ${token}`;
+  return config;
+});
+
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [metrics, setMetrics] = useState([]);
+  const [activities, setActivities] = useState([]);
+  const [newActivity, setNewActivity] = useState("");
 
-  const handleLogin = async () => {
-    setLoading(true);
+  useEffect(() => {
+    if (isLoggedIn) {
+      api.get("/metrics").then((res) => setMetrics(res.data)).catch(() => logout());
+      api.get("/activities").then((res) => setActivities(res.data)).catch(() => logout());
+    }
+  }, [isLoggedIn]);
+
+  const login = async () => {
     try {
       const res = await api.post("/auth/login", { email, password });
-      localStorage.setItem("token", res.data.token); // or accessToken if used
-      navigate("/");
+      localStorage.setItem("token", res.data.token);
+      setIsLoggedIn(true);
     } catch (err) {
       setMsg(err.response?.data?.message || "Login failed.");
-    } finally {
-      setLoading(false);
     }
   };
 
-  const handleGoogleSuccess = async (credentialResponse) => {
-    setLoading(true);
-    try {
-      const res = await api.post("/auth/google-login", {
-        token: credentialResponse.credential,
-      });
-      localStorage.setItem("token", res.data.accessToken); // assuming response has accessToken
-      navigate("/");
-    } catch (err) {
-      setMsg(err.response?.data?.message || "Google Login failed.");
-    } finally {
-      setLoading(false);
-    }
+  const logout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    setEmail("");
+    setPassword("");
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#0f172a] to-[#1e293b] px-4">
-      <motion.div
-        initial={{ opacity: 0, y: -30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="bg-[#1e293b] bg-opacity-80 backdrop-blur-md border border-blue-800 p-10 rounded-2xl shadow-2xl w-full max-w-md relative"
-      >
-        {loading && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 rounded-2xl">
-            <div className="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
-          </div>
-        )}
+  const addActivity = async () => {
+    if (!newActivity.trim()) return;
+    const res = await api.post("/activities", { text: newActivity });
+    setActivities((prev) => [res.data, ...prev]);
+    setNewActivity("");
+  };
 
-        <h2 className="text-3xl font-bold mb-4 text-center text-blue-400">
-          Login
-        </h2>
-
-        {msg && (
-          <p className="text-red-400 mb-3 text-sm text-center font-semibold">
-            {msg}
-          </p>
-        )}
-
-        <div className="space-y-4">
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="bg-white p-6 rounded shadow w-full max-w-sm space-y-4">
+          <h2 className="text-xl font-bold">Login</h2>
+          {msg && <p className="text-red-500">{msg}</p>}
           <input
             type="email"
             placeholder="Email"
-            className="w-full p-3 bg-[#0f172a] border border-blue-500 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            required
-            disabled={loading}
+            className="w-full p-2 border rounded"
           />
           <input
             type="password"
             placeholder="Password"
-            className="w-full p-3 bg-[#0f172a] border border-blue-500 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            required
-            disabled={loading}
+            className="w-full p-2 border rounded"
           />
           <button
-            type="button"
-            onClick={handleLogin}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded transition-all"
-            disabled={loading}
+            onClick={login}
+            className="w-full bg-indigo-600 text-white py-2 rounded"
           >
-            {loading ? "Logging in..." : "Login"}
+            Login
           </button>
         </div>
+      </div>
+    );
+  }
 
-        <div className="mt-6 text-center text-sm text-gray-300">
-          Don’t have an account?{" "}
-          <Link to="/register" className="text-blue-400 font-semibold">
-            Register
-          </Link>
-        </div>
+  return (
+    <div className="p-6 space-y-6">
+      <div className="flex justify-between items-center">
+        <h1 className="text-2xl font-bold">Dashboard</h1>
+        <button onClick={logout} className="bg-red-500 text-white px-4 py-2 rounded">
+          Logout
+        </button>
+      </div>
 
-        <div className="mt-6 flex justify-center">
-          {!loading && (
-            <GoogleLogin
-              onSuccess={handleGoogleSuccess}
-              onError={() => setMsg("Google Sign In Failed")}
-            />
-          )}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {metrics.map((m) => (
+          <div key={m.title} className="p-4 bg-white shadow rounded">
+            <h2 className="font-bold">{m.title}</h2>
+            <p className="text-xl">{m.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-white p-4 rounded shadow">
+        <h2 className="font-bold mb-2">Activities</h2>
+        <div className="flex gap-2 mb-4">
+          <input
+            value={newActivity}
+            onChange={(e) => setNewActivity(e.target.value)}
+            placeholder="New activity"
+            className="flex-1 border p-2 rounded"
+          />
+          <button onClick={addActivity} className="bg-blue-500 text-white px-4 py-2 rounded">
+            Add
+          </button>
         </div>
-      </motion.div>
+        <ul className="space-y-2">
+          {activities.map((a) => (
+            <li key={a.id} className="p-2 border rounded">
+              {a.text} – <span className="text-sm">{a.time || "just now"}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
-};
-
-export default Login;
+}
