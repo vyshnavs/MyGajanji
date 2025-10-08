@@ -74,17 +74,23 @@ exports.login = async (req, res) => {
   const match = await bcrypt.compare(password, user.password);
   if (!match) return res.status(400).send('Incorrect password');
 
-  const token = jwt.sign({ id: user._id,name: user.name, email: user.email,picture: user.picture }, process.env.JWT_SECRET);
-  res.cookie('token', token, { httpOnly: true });
-  res.json({
-    message: 'Login successful',
-    token,
-    user: {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-    }
-  });
+  const accessToken = jwt.sign(
+      {
+        _id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        picture: user.picture,
+        roles: user.roles || [],
+        provider: user.provider,
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+  
+    return res.status(200).json({
+      message: " login successful",
+      accessToken,
+    });
 };
 
 exports.logout = (req, res) => {

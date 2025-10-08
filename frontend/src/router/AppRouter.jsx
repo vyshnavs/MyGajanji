@@ -34,8 +34,9 @@ function AppRouter() {
         <Route path="/" element={<HomePage/>} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/chatbot" element={<Chatbot />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        {/* Protected Routes */}
+        <Route path="/chatbot" element={<ProtectedRoute><Chatbot /></ProtectedRoute>} />
       </Routes>
     </Router>
   );
