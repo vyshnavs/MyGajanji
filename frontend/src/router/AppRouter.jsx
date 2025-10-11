@@ -8,6 +8,7 @@ import Chatbot from "../pages/ChatBot";
 import Dashboard from "../pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoutes";
 import SplashScreen from "../components/SplashScreen";
+import Help from "../pages/Help";
 
 function AppRouter() {
   const [showSplash, setShowSplash] = useState(false);
@@ -35,6 +36,7 @@ function AppRouter() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/help" element={<Help />} />
         {/* Protected Routes */}
         <Route path="/chatbot" element={<ProtectedRoute><Chatbot /></ProtectedRoute>} />
       </Routes>

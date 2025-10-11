@@ -63,6 +63,10 @@ const Navbar = () => {
           <a href="/chatbot" className="hover:text-blue-300">
           chatbot
         </a>
+        <a href="/help" className="hover:text-blue-300">
+          Help
+        </a>
+        
 
         {!user ? (
           <a

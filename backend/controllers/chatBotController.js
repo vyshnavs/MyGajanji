@@ -19,7 +19,7 @@ exports.postMessage = async (req, res) => {
   const rasaResp = await axios.post(
     RASA_URL,
     { sender: String(userId), message: message.trim() },
-    { timeout: 15000, headers: { "Content-Type": "application/json" } }
+    { timeout: 1500000, headers: { "Content-Type": "application/json" } }
   );
 
   const rasaMsgs = Array.isArray(rasaResp.data) ? rasaResp.data : [];

@@ -47,6 +47,14 @@ logs/
 # models/
 # ↑ comment out or remove this line so trained models are included
 
-# Rasa results & cache
-results/
-.cache/
+# Rasa bot
+rasa-bot/venv/
+rasa-bot/models/
+rasa-bot/.rasa/
+rasa-bot/__pycache__/
+rasa-bot/*.pyc
+rasa-bot/*.pyo
+rasa-bot/*.pyd
+rasa-bot/*.log
+rasa-bot/.env
+rasa-bot/.rasa_sdk_cache/
