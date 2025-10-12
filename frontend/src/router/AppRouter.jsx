@@ -9,6 +9,10 @@ import Dashboard from "../pages/Dashboard";
 import ProtectedRoute from "./ProtectedRoutes";
 import SplashScreen from "../components/SplashScreen";
 import Help from "../pages/Help";
+import AddTransaction from "../pages/AddTransaction";
+import CategoryManagement from "../pages/CategoryManagement";
+import About from "../pages/About";
+
 
 function AppRouter() {
   const [showSplash, setShowSplash] = useState(false);
@@ -30,6 +34,7 @@ function AppRouter() {
   }
 
   return (
+
     <Router>
       <Routes>
         <Route path="/" element={<HomePage/>} />
@@ -37,8 +42,11 @@ function AppRouter() {
         <Route path="/register" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/help" element={<Help />} />
+        <Route path="/about" element={<About />} />
         {/* Protected Routes */}
         <Route path="/chatbot" element={<ProtectedRoute><Chatbot /></ProtectedRoute>} />
+        <Route path="/addtransaction" element={<ProtectedRoute><AddTransaction /></ProtectedRoute>} />
+        <Route path="/category" element={<ProtectedRoute><CategoryManagement /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

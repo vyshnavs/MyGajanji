@@ -51,13 +51,7 @@ const Navbar = () => {
       <div className="text-2xl font-bold text-blue-400">MyGajanji</div>
 
       <div className="flex gap-6 items-center relative">
-        <a href="#features" className="hover:text-blue-300">
-          Features
-        </a>
-        <a href="#built" className="hover:text-blue-300">
-          Tech
-        </a>
-        <a href="#about" className="hover:text-blue-300">
+        <a href="/about" className="hover:text-blue-300">
           About
         </a>
           <a href="/chatbot" className="hover:text-blue-300">
@@ -65,6 +59,12 @@ const Navbar = () => {
         </a>
         <a href="/help" className="hover:text-blue-300">
           Help
+        </a>
+        <a href="/addtransaction" className="hover:text-blue-300">
+          Add Transaction
+        </a>
+        <a href="/category" className="hover:text-blue-300">
+          Category
         </a>
         
 

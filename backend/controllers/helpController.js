@@ -39,7 +39,6 @@ const faqData = [
 // @access  Public
 const getFAQs = async (req, res) => {
   try {
-    console.log('GET /api/help called');
     // Simulate async operation (in real app, this would be a DB call)
     const faqs = await Promise.resolve(faqData);
     

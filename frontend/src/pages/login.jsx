@@ -15,7 +15,11 @@ const Login = () => {
     setLoading(true);
     try {
       const res = await api.post("/auth/login", { email, password });
-      localStorage.setItem("token", res.data.accessToken); // or accessToken if used
+      localStorage.setItem("token", res.data.accessToken);
+      setTimeout(() => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      },60 * 60 * 1000); // or accessToken if used
       navigate("/");
     } catch (err) {
       setMsg(err.response?.data?.message || "Login failed.");
@@ -31,6 +35,10 @@ const Login = () => {
         token: credentialResponse.credential,
       });
       localStorage.setItem("token", res.data.accessToken); // assuming response has accessToken
+      setTimeout(() => {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+      }, 60 * 60 * 1000);
       navigate("/");
     } catch (err) {
       setMsg(err.response?.data?.message || "Google Login failed.");
