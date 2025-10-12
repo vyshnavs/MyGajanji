@@ -8,27 +8,27 @@ export default function AboutPage() {
   const teamMembers = [
     {
       id: 1,
-      name: 'Alex Johnson',
-      role: 'Lead Developer',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=500&fit=crop&q=80&sat=-100'
+      name: 'Vyshnav S',
+      role: 'Developer',
+      image:'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg'
     },
     {
       id: 2,
-      name: 'Sarah Chen',
-      role: 'Product Manager',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&h=500&fit=crop&q=80&sat=-100'
+      name: 'Sanjay',
+      role: 'Developer',
+      image: 'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg'
     },
     {
       id: 3,
-      name: 'Michael Brown',
-      role: 'Backend Specialist',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&h=500&fit=crop&q=80&sat=-100'
+      name: 'Sandra',
+      role: 'Developer',
+      image: 'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg'
     },
     {
       id: 4,
-      name: 'Emma Davis',
-      role: 'UI/UX Designer',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&h=500&fit=crop&q=80&sat=-100'
+      name: 'Gouri Priya',
+      role: 'Developer',
+      image: 'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg'
     }
   ];
 
