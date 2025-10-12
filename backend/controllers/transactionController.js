@@ -58,7 +58,8 @@ const getPeriodRange = (period) => {
 
 // 🔹 Get summary (income, expense, balance)
 exports.getSummary = async (req, res) => {
-  try {
+  try{
+    console.log("getSummary called with query:", req.query);
     const { _id: userId } = req.user;
     const { period } = req.query;
     const { start, end } = getPeriodRange(period);

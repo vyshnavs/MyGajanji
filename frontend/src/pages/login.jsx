@@ -15,11 +15,10 @@ const Login = () => {
     setLoading(true);
     try {
       const res = await api.post("/auth/login", { email, password });
-      localStorage.setItem("token", res.data.accessToken);
-      setTimeout(() => {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-      },60 * 60 * 1000); // or accessToken if used
+      const token = res.data.accessToken;
+      const expiryTime = Date.now() + 60 * 60 * 1000; // 1 hour
+      localStorage.setItem("token", token);
+      localStorage.setItem("tokenExpiry", expiryTime.toString());
       navigate("/");
     } catch (err) {
       setMsg(err.response?.data?.message || "Login failed.");
@@ -34,11 +33,11 @@ const Login = () => {
       const res = await api.post("/auth/google-login", {
         token: credentialResponse.credential,
       });
-      localStorage.setItem("token", res.data.accessToken); // assuming response has accessToken
-      setTimeout(() => {
-        localStorage.removeItem("token");
-        window.location.href = "/login";
-      }, 60 * 60 * 1000);
+      // After login
+      const token = res.data.accessToken;
+      const expiryTime = Date.now() + 60 * 60 * 1000; // 1 hour from now
+      localStorage.setItem("token", token);
+      localStorage.setItem("tokenExpiry", expiryTime.toString());
       navigate("/");
     } catch (err) {
       setMsg(err.response?.data?.message || "Google Login failed.");

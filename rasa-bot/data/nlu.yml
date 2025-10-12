@@ -1,23 +1,43 @@
 version: "3.1"
-
 nlu:
-  - intent: greet
-    examples: |
-      - hi
-      - hello
-      - hey
-      - hey there
-
-  - intent: goodbye
-    examples: |
-      - bye
-      - goodbye
-      - see you later
-
-  - intent: ask_ollama
-    examples: |
-      - Can you explain quantum entanglement?
-      - Tell me about the lifecycle of a star
-      - What is polymorphism in OOP?
-      - Summarize the latest research about X
-      - Generate a short poem about autumn
+- intent: greet
+  examples: |
+    - hi
+    - hello
+    - hey
+    - good morning
+    - what's up
+- intent: goodbye
+  examples: |
+    - bye
+    - see you later
+    - goodbye
+- intent: check_income
+  examples: |
+    - show my income
+    - what is my total income
+    - check my income for this month
+    - income for August
+- intent: check_expense
+  examples: |
+    - what did I spend this month
+    - show my expenses
+    - total expense for September
+    - expense for this month
+- intent: check_balance
+  examples: |
+    - what's my balance
+    - show my net balance
+    - how much is left this month
+- intent: add_transaction
+  examples: |
+    - I want to add a transaction
+    - add income
+    - add expense
+    - record new transaction
+- intent: get_suggestions
+  examples: |
+    - give me tips
+    - suggest how to save money
+    - what is your advice for me
+    - give me spending advice

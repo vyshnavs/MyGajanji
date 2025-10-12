@@ -7,8 +7,14 @@ const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showScrollArrow, setShowScrollArrow] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const scrollRef = useRef(null);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
+
+  // Emoji list for the picker
+  const emojis = ["😀", "😊", "😂", "❤️", "👍", "🎉", "🔥", "💯", "🤔", "😍", "🙏", "👋", "💰", "💸", "📈", "💳"];
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -17,6 +23,7 @@ const Chatbot = () => {
         // Add status to existing messages from backend
         const messagesWithStatus = (res.data?.messages || []).map(msg => ({
           ...msg,
+          id: msg._id, // Map _id to id for frontend
           status: msg.role === "user" ? "delivered" : undefined
         }));
         setMessages(messagesWithStatus);
@@ -28,10 +35,36 @@ const Chatbot = () => {
   }, []);
 
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
+    scrollToBottom();
   }, [messages, loading]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollRef.current) {
+        const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+        // Show arrow if not at bottom (with 50px threshold)
+        setShowScrollArrow(scrollTop + clientHeight < scrollHeight - 50);
+      }
+    };
+
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      // Initial check
+      handleScroll();
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo({
+        top: scrollRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+      setShowScrollArrow(false);
+    }
+  };
 
   const sendMessage = async (e) => {
     e?.preventDefault?.();
@@ -40,24 +73,45 @@ const Chatbot = () => {
     const userMsgId = Date.now().toString();
     const userMessageText = input.trim();
     
+    // Check for navigation commands in user input
+    if (userMessageText.includes('/add-transaction')) {
+      navigate('/addtransaction');
+      return;
+    }
+    if (userMessageText.includes('/category')) {
+      navigate('/category');
+      return;
+    }
+    
     // Immediately add user message to UI with 'sending' status
     const userMsg = { 
       id: userMsgId,
       role: "user", 
       text: userMessageText, 
       createdAt: new Date().toISOString(),
-      status: 'sending' // Show sending status immediately
+      status: 'sending'
     };
     
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setLoading(true);
+    setShowEmojiPicker(false);
     
     try {
       const res = await api.post("/chatbot", { message: userMessageText });
       const botReplies = res.data?.replies || [];
       
-      // Update user message status to delivered (blue ticks)
+      // Check for navigation commands in bot responses
+      botReplies.forEach(reply => {
+        if (reply.text && reply.text.includes('/add-transaction')) {
+          setTimeout(() => navigate('/addtransaction'), 500);
+        }
+        if (reply.text && reply.text.includes('/category')) {
+          setTimeout(() => navigate('/category'), 500);
+        }
+      });
+      
+      // Update user message status to delivered
       setMessages(prev => prev.map(msg => 
         msg.id === userMsgId ? { ...msg, status: 'delivered' } : msg
       ));
@@ -100,12 +154,44 @@ const Chatbot = () => {
     }
   };
 
+  const addEmoji = (emoji) => {
+    setInput(prev => prev + emoji);
+    // Focus back to input
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, 0);
+  };
+
+  const toggleEmojiPicker = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
   const formatTime = (timestamp) => {
-    return new Date(timestamp).toLocaleTimeString('en-US', { 
-      hour: 'numeric', 
-      minute: '2-digit',
-      hour12: true 
-    });
+    const now = new Date();
+    const messageDate = new Date(timestamp);
+    
+    // Check if message is from today
+    const isToday = now.toDateString() === messageDate.toDateString();
+    
+    if (isToday) {
+      return messageDate.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+    } else {
+      return messageDate.toLocaleDateString('en-US', { 
+        month: 'short', 
+        day: 'numeric',
+        year: now.getFullYear() !== messageDate.getFullYear() ? 'numeric' : undefined
+      }) + ' ' + messageDate.toLocaleTimeString('en-US', { 
+        hour: 'numeric', 
+        minute: '2-digit',
+        hour12: true 
+      });
+    }
   };
 
   const renderMessageStatus = (message) => {
@@ -143,7 +229,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#111B21]">
+    <div className="min-h-screen flex flex-col bg-[#111B21] relative">
       {/* Header */}
       <div className="h-16 flex items-center px-4 border-b border-[#2F3B43] bg-[#202C33]">
         <div className="flex items-center space-x-4">
@@ -175,6 +261,19 @@ const Chatbot = () => {
         ref={scrollRef} 
         className="flex-1 overflow-y-auto relative bg-animated"
       >
+        {/* Scroll to bottom arrow */}
+        {showScrollArrow && (
+          <button
+            onClick={scrollToBottom}
+            className="fixed bottom-24 right-6 z-30 bg-[#005C4B] hover:bg-[#008069] text-white p-3 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 border border-[#008069]"
+            style={{ zIndex: 1000 }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
+          </button>
+        )}
+
         <div className="relative mx-auto w-full max-w-3xl px-2 sm:px-4 py-4 space-y-2">
           {messages.map((m, idx) => (
             <div
@@ -219,30 +318,49 @@ const Chatbot = () => {
         </div>
       </div>
 
+      {/* Emoji Picker */}
+      {showEmojiPicker && (
+        <div className="absolute bottom-20 left-4 bg-[#202C33] border border-[#2F3B43] rounded-2xl p-3 shadow-2xl z-50 max-w-xs">
+          <div className="grid grid-cols-8 gap-1">
+            {emojis.map((emoji, index) => (
+              <button
+                key={index}
+                onClick={() => addEmoji(emoji)}
+                className="w-8 h-8 flex items-center justify-center hover:bg-[#2A3942] rounded-lg transition-colors text-lg hover:scale-110"
+              >
+                {emoji}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Input Area */}
       <div className="bg-[#202C33] px-4 py-4 border-t border-[#2F3B43]">
         <div className="mx-auto w-full max-w-3xl">
           <form onSubmit={sendMessage} className="flex items-center space-x-3">
+            {/* Emoji picker toggle button */}
+            <button
+              type="button"
+              onClick={toggleEmojiPicker}
+              className="text-[#AEBAC1] hover:text-white transition-colors p-2 rounded-full hover:bg-[#2A3942]"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+
             {/* Message input */}
             <div className="flex-1 relative">
               <input
+                ref={inputRef}
                 type="text"
-                className="w-full bg-[#2A3942] text-white placeholder-[#AEBAC1] rounded-2xl px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-[#FF416C] focus:ring-opacity-50 border border-[#3D4B52] transition-all duration-300 hover:border-[#FF416C] hover:border-opacity-30"
+                className="w-full bg-[#2A3942] text-white placeholder-[#AEBAC1] rounded-2xl px-4 py-3 pr-4 focus:outline-none focus:ring-2 focus:ring-[#FF416C] focus:ring-opacity-50 border border-[#3D4B52] transition-all duration-300 hover:border-[#FF416C] hover:border-opacity-30"
                 placeholder="Type your message..."
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
               />
-              
-              {/* Emoji button inside input */}
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#AEBAC1] hover:text-white transition-colors p-1"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </button>
             </div>
 
             {/* Send button */}

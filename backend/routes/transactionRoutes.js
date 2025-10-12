@@ -12,7 +12,7 @@ const {
 router.post("/", auth, createTransaction);
 
 // ✅ GET /api/transactions -> get user transactions
-router.get("/", auth, getTransactions);
+router.get("/",auth, getTransactions);
 
 // ✅ GET /api/transactions/summary?period=2025-10
 router.get("/summary", auth, getSummary);

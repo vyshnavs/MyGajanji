@@ -10,6 +10,7 @@ module.exports = (req, res, next) => {
   }
 
   try {
+     console.log("[DEBUG] Token received:", token);
     // Verify and decode the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
@@ -22,6 +23,7 @@ module.exports = (req, res, next) => {
       roles: decoded.roles || [],
       // add any other claims you sign, e.g., plan, orgId, etc.
     };
+
 
     return next();
   } catch (err) {

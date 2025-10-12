@@ -3,27 +3,39 @@ version: "3.1"
 intents:
   - greet
   - goodbye
-  - ask_ollama
-  - affirm
+  - check_income
+  - check_expense
+  - check_balance
+  - add_transaction
+  - get_suggestion
+  - thankyou
+  - nlu_fallback
+
+entities:
+  - period
+
+slots:
+  period:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: period
+      - type: from_text
 
 responses:
   utter_greet:
-    - text: "Hey! How can I help?"
+    - text: "Hello! 👋 How can I help you with your finances today?"
   utter_goodbye:
-    - text: "Goodbye 👋"
-  utter_ask_clarify:
-    - text: "I didn't understand — can you rephrase?"
-
-slots:
-  last_user_message:
-    type: text
-    influence_conversation: false
-    mappings:
-      - type: from_text  # captures raw user message
+    - text: "Goodbye! Keep saving smartly 💰"
+  utter_thankyou:
+    - text: "You're welcome! 😊"
+  utter_default:
+    - text: "I didn't understand. Can you rephrase?"
 
 actions:
-  - action_query_ollama
-
-session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
+  - action_check_income
+  - action_check_expense
+  - action_check_balance
+  - action_add_transaction
+  - action_get_suggestion
