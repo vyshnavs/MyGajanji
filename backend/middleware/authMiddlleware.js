@@ -10,7 +10,6 @@ module.exports = (req, res, next) => {
   }
 
   try {
-     console.log("[DEBUG] Token received:", token);
     // Verify and decode the token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     

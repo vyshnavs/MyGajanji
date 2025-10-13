@@ -1,17 +1,21 @@
 // router/AppRouter.jsx
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useState, useEffect } from "react";
+import RouteWrapper from "./RouteWrapper";
+
+import SplashScreen from "../components/SplashScreen";
+
 import HomePage from "../pages/HomePage";
 import Login from "../pages/login";
 import Register from "../pages/register";
 import Chatbot from "../pages/ChatBot";
 import Dashboard from "../pages/Dashboard";
-import SplashScreen from "../components/SplashScreen";
 import Help from "../pages/Help";
 import AddTransaction from "../pages/AddTransaction";
 import CategoryManagement from "../pages/CategoryManagement";
 import About from "../pages/About";
-import RouteWrapper from "./RouteWrapper";
+import Reports from "../pages/Reports";
+
 
 function AppRouter() {
   const [showSplash, setShowSplash] = useState(false);
@@ -72,6 +76,14 @@ function AppRouter() {
           element={
             <RouteWrapper protect={true}>
               <CategoryManagement />
+            </RouteWrapper>
+          }
+        />
+        <Route
+          path="/reports"
+          element={
+            <RouteWrapper protect={true}>
+              <Reports />
             </RouteWrapper>
           }
         />

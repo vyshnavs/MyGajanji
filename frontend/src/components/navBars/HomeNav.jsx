@@ -66,6 +66,9 @@ const Navbar = () => {
         <a href="/category" className="hover:text-blue-300">
           Category
         </a>
+         <a href="/reports" className="hover:text-blue-300">
+          Reports
+        </a>
         
 
         {!user ? (

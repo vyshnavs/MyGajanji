@@ -30,7 +30,6 @@ def get_token(tracker: Tracker):
     if token and token.lower().startswith("bearer "):
         token = token[7:]
 
-    print(f"[DEBUG] Token to send (raw): {token}")
     return token
 
 

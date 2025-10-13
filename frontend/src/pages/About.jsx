@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { Home, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { Home, ChevronLeft, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function AboutPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -8,48 +8,45 @@ export default function AboutPage() {
   const teamMembers = [
     {
       id: 1,
-      name: 'Vyshnav S',
-      role: 'Developer',
-      image:'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg'
+      name: "Vyshnav S",
+      role: "Developer",
+      image:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg",
     },
     {
       id: 2,
-      name: 'Sanjay',
-      role: 'Developer',
-      image: 'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg'
+      name: "Sanjay",
+      role: "Developer",
+      image:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg",
     },
     {
       id: 3,
-      name: 'Sandra',
-      role: 'Developer',
-      image: 'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg'
+      name: "Sandra",
+      role: "Developer",
+      image:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg",
     },
     {
       id: 4,
-      name: 'Gouri Priya',
-      role: 'Developer',
-      image: 'https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg'
-    }
+      name: "Gouri Priya",
+      role: "Developer",
+      image:
+        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg",
+    },
   ];
 
   // Auto-rotate carousel
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % teamMembers.length);
-    }, 5000);
+    }, 3000);
     return () => clearInterval(interval);
   }, [teamMembers.length]);
 
-  const handlePrev = () => {
-    setCurrentIndex((prev) => (prev - 1 + teamMembers.length) % teamMembers.length);
-  };
+  const navigate = useNavigate();
 
-  const handleNext = () => {
-    setCurrentIndex((prev) => (prev + 1) % teamMembers.length);
-  };
- const navigate = useNavigate();
-
-  const goHome = () => navigate('/');
+  const goHome = () => navigate("/");
 
   const getVisibleMembers = () => {
     const members = [];
@@ -73,12 +70,12 @@ export default function AboutPage() {
 
       {/* Header */}
       <div className="pt-24 pb-16 text-center px-4">
-        
         <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
           About Our Platform
         </h1>
         <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-          Revolutionizing personal finance management with intelligent, user-friendly tools
+          Revolutionizing personal finance management with intelligent,
+          user-friendly tools
         </p>
       </div>
 
@@ -90,11 +87,15 @@ export default function AboutPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-red-500 to-red-400 rounded-xl blur-lg opacity-0 group-hover:opacity-75 transition-opacity duration-500 animate-pulse"></div>
             <div className="relative bg-slate-800 p-8 rounded-xl border border-slate-700 hover:border-red-500 transition-all duration-500">
               <div className="absolute top-0 right-0 w-1 h-12 bg-gradient-to-b from-red-500 to-transparent rounded-bl-lg"></div>
-              <h2 className="text-3xl font-bold text-red-400 mb-4">Our Mission</h2>
+              <h2 className="text-3xl font-bold text-red-400 mb-4">
+                Our Mission
+              </h2>
               <p className="text-gray-300 leading-relaxed">
-                To empower individuals with cutting-edge financial management tools that simplify budgeting, 
-                expense tracking, and wealth building. We believe everyone deserves access to intelligent, 
-                intuitive technology that helps them take control of their financial future.
+                To empower individuals with cutting-edge financial management
+                tools that simplify budgeting, expense tracking, and wealth
+                building. We believe everyone deserves access to intelligent,
+                intuitive technology that helps them take control of their
+                financial future.
               </p>
             </div>
           </div>
@@ -104,11 +105,15 @@ export default function AboutPage() {
             <div className="absolute inset-0 bg-gradient-to-r from-red-600 via-red-500 to-red-400 rounded-xl blur-lg opacity-0 group-hover:opacity-75 transition-opacity duration-500 animate-pulse"></div>
             <div className="relative bg-slate-800 p-8 rounded-xl border border-slate-700 hover:border-red-500 transition-all duration-500">
               <div className="absolute top-0 right-0 w-1 h-12 bg-gradient-to-b from-red-500 to-transparent rounded-bl-lg"></div>
-              <h2 className="text-3xl font-bold text-red-400 mb-4">Our Vision</h2>
+              <h2 className="text-3xl font-bold text-red-400 mb-4">
+                Our Vision
+              </h2>
               <p className="text-gray-300 leading-relaxed">
-                To create a world where financial literacy and management are accessible, engaging, and 
-                effortless for everyone. We envision a future where technology bridges the gap between 
-                financial goals and achievements, enabling better decisions and lasting prosperity.
+                To create a world where financial literacy and management are
+                accessible, engaging, and effortless for everyone. We envision a
+                future where technology bridges the gap between financial goals
+                and achievements, enabling better decisions and lasting
+                prosperity.
               </p>
             </div>
           </div>
@@ -117,88 +122,94 @@ export default function AboutPage() {
 
       {/* Team Carousel Section */}
       <div className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-4xl font-bold text-white text-center mb-16">Meet Our Team</h2>
-        
-        <div className="relative flex items-center justify-center min-h-96">
-          {/* Left Arrow */}
-          <button
-            onClick={handlePrev}
-            className="absolute left-0 z-20 p-3 rounded-full bg-red-500 hover:bg-red-600 text-white transition-all duration-300 hover:scale-110 shadow-lg"
-          >
-            <ChevronLeft size={32} />
-          </button>
+        <h2 className="text-4xl font-bold text-white text-center mb-16">
+          Meet Our Team
+        </h2>
 
+        <div className="relative flex items-center justify-center min-h-96">
           {/* Carousel Container */}
           <div className="w-full flex items-center justify-center perspective px-20">
-            <div className="relative w-full h-80 flex items-center justify-center" style={{ perspective: '1200px' }}>
-              {getVisibleMembers().map((member, idx) => {
+            <div
+              className="relative w-full h-80 flex items-center justify-center"
+              style={{ perspective: "1200px" }}
+            >
+              {getVisibleMembers().map((member) => {
                 const offset = member.offset;
-                const angle = offset * 90; // 90 degrees between each member (360/4)
+                const angle = offset * 100; // 90 degrees between each member
                 const radius = 280; // Distance from center
-                
+
                 return (
                   <div
                     key={member.id}
                     className={`absolute transition-all duration-500 ease-out ${
-                      offset === 0 ? 'z-30' : 'z-10'
+                      offset === 0 ? "z-30" : "z-10"
                     }`}
                     style={{
                       transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                      perspective: '1000px',
+                      perspective: "1000px",
+                      opacity: offset === 0 ? 1 : 0.3, // <-- center full, sides 30%
                     }}
                   >
                     <div className="flex flex-col items-center">
-                      <div className="relative w-64 h-64 rounded-2xl overflow-hidden shadow-2xl border-4 border-red-500" style={{ backfaceVisibility: 'hidden' }}>
+                      {/* Member photo */}
+                      <div
+                        className="relative w-64 h-64 rounded-2xl overflow-hidden shadow-2xl border-4 border-red-500"
+                        style={{ backfaceVisibility: "hidden" }}
+                      >
                         <img
                           src={member.image}
                           alt={member.name}
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      <div className="mt-6 text-center opacity-100 transition-opacity duration-500" style={{ opacity: offset === 0 ? 1 : 0 }}>
-                        <h3 className="text-2xl font-bold text-white mb-1">
-                          {member.name}
-                        </h3>
-                        <p className="text-red-400 font-medium">
-                          {member.role}
-                        </p>
-                      </div>
+
+                      {/* Only show text for center member */}
+                      {offset === 0 && (
+                        <div className="mt-6 text-center transition-opacity duration-500">
+                          <h3 className="text-2xl font-bold text-white mb-1">
+                            {member.name}
+                          </h3>
+                          <p className="text-red-400 font-medium">
+                            {member.role}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
               })}
             </div>
           </div>
-
-          {/* Right Arrow */}
-          <button
-            onClick={handleNext}
-            className="absolute right-0 z-20 p-3 rounded-full bg-red-500 hover:bg-red-600 text-white transition-all duration-300 hover:scale-110 shadow-lg"
-          >
-            <ChevronRight size={32} />
-          </button>
         </div>
-
-
       </div>
 
       {/* Values Section */}
       <div className="max-w-6xl mx-auto px-4 py-16 mb-16">
-        <h2 className="text-4xl font-bold text-white text-center mb-12">Our Core Values</h2>
-        
+        <h2 className="text-4xl font-bold text-white text-center mb-12">
+          Our Core Values
+        </h2>
+
         <div className="grid md:grid-cols-3 gap-6">
           {[
-            { title: 'Innovation', desc: 'Constantly pushing boundaries to deliver cutting-edge solutions' },
-            { title: 'Integrity', desc: 'Building trust through transparency and ethical practices' },
-            { title: 'Empowerment', desc: 'Enabling users to achieve their financial goals' }
+            {
+              title: "Innovation",
+              desc: "Constantly pushing boundaries to deliver cutting-edge solutions",
+            },
+            {
+              title: "Integrity",
+              desc: "Building trust through transparency and ethical practices",
+            },
+            {
+              title: "Empowerment",
+              desc: "Enabling users to achieve their financial goals",
+            },
           ].map((value, idx) => (
-            <div
-              key={idx}
-              className="relative group"
-            >
+            <div key={idx} className="relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-red-600 to-red-400 rounded-lg opacity-0 group-hover:opacity-50 transition-opacity duration-500 blur-md"></div>
               <div className="relative bg-slate-800 p-6 rounded-lg border border-slate-700 hover:border-red-500 transition-all duration-500">
-                <h3 className="text-xl font-bold text-red-400 mb-3">{value.title}</h3>
+                <h3 className="text-xl font-bold text-red-400 mb-3">
+                  {value.title}
+                </h3>
                 <p className="text-gray-300">{value.desc}</p>
               </div>
             </div>

@@ -9,4 +9,4 @@ const userSchema = new mongoose.Schema({
   provider: { type: String, enum: ['local', 'google'], default: 'local' } // Helps track login method
 });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.models.User || mongoose.model("User", userSchema);
