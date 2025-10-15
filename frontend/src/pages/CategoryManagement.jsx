@@ -119,7 +119,7 @@ export default function CategoryManagement() {
     setExpanded((s) => ({ ...s, [key]: !s[key] }));
   };
 
-  const goEdit = (id) => navigate(`/edittransaction/${id}`);
+  const goEdit = (id) => navigate(`/transaction/edit/${id}`);
 
   const handleDelete = async (id) => {
     if (!confirm("Delete this transaction? This cannot be undone.")) return;

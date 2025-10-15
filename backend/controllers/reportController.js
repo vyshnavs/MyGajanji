@@ -2,6 +2,7 @@ const PDFDocument = require("pdfkit");
 const { Parser } = require("json2csv");
 const Transaction = require("../models/Transaction");
 const User = require("../models/user");
+const ExcelJS = require('exceljs'); // Add this import
 
 // Utility: Format date DD-MM-YYYY
 const formatDate = (date) => {
@@ -367,11 +368,12 @@ exports.downloadPDF = async (req, res) => {
 };
 
 // ============================
-// @desc   GET /api/reports/download/csv?from=...&to=...
+// @desc   GET /api/reports/download/excel?from=...&to=...
 // ============================
-exports.downloadCSV = async (req, res) => {
+exports.downloadExcel = async (req, res) => {
   try {
     const userId = req.user._id;
+    const user = req.user;
     const { from, to } = req.query;
 
     const start = new Date(from);
@@ -383,42 +385,209 @@ exports.downloadCSV = async (req, res) => {
       date: { $gte: start, $lte: end },
     }).sort({ date: -1 });
 
-    // Enhanced CSV fields with better formatting
-    const fields = [
-      {
-        label: "Amount",
-        value: "amount"
-      },
-      {
-        label: "Category",
-        value: "category"
-      },
-      {
-        label: "Type",
-        value: "type"
-      },
-      {
-        label: "Date",
-        value: (row) => formatDate(row.date)
-      },
-      {
-        label: "Description",
-        value: "description"
+    const totalIncome = transactions
+      .filter((t) => t.type === "income")
+      .reduce((sum, t) => sum + t.amount, 0);
+    const totalExpense = transactions
+      .filter((t) => t.type === "expense")
+      .reduce((sum, t) => sum + t.amount, 0);
+    const netBalance = totalIncome - totalExpense;
+
+    // Create a new workbook
+    const workbook = new ExcelJS.Workbook();
+    
+    // Add a worksheet
+    const worksheet = workbook.addWorksheet('Financial Report');
+
+    // Set up styles
+    const headerStyle = {
+      font: { bold: true, color: { argb: 'FFFFFFFF' }, size: 12 },
+      fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF1E40AF' } },
+      alignment: { horizontal: 'center', vertical: 'middle' },
+      border: {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
       }
+    };
+
+    const titleStyle = {
+      font: { bold: true, size: 16, color: { argb: 'FF1E40AF' } },
+      alignment: { horizontal: 'center', vertical: 'middle' }
+    };
+
+    const subtitleStyle = {
+      font: { size: 12, color: { argb: 'FF64748B' } },
+      alignment: { horizontal: 'center', vertical: 'middle' }
+    };
+
+    const summaryHeaderStyle = {
+      font: { bold: true, size: 14, color: { argb: 'FF1E40AF' } },
+      fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF1F5F9' } },
+      border: {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      }
+    };
+
+    const incomeStyle = {
+      font: { bold: true, color: { argb: 'FF16A34A' } },
+      fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF0FDF4' } }
+    };
+
+    const expenseStyle = {
+      font: { bold: true, color: { argb: 'FFDC2626' } },
+      fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFEF2F2' } }
+    };
+
+    const dataHeaderStyle = {
+      font: { bold: true, color: { argb: 'FF475569' } },
+      fill: { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFF8FAFC' } },
+      border: {
+        top: { style: 'thin' },
+        left: { style: 'thin' },
+        bottom: { style: 'thin' },
+        right: { style: 'thin' }
+      }
+    };
+
+    // Set column widths
+    worksheet.columns = [
+      { width: 15 }, // A: Amount
+      { width: 20 }, // B: Category
+      { width: 15 }, // C: Type
+      { width: 15 }, // D: Date
+      { width: 30 }  // E: Description
     ];
 
-    const parser = new Parser({ 
-      fields,
-      withBOM: true // For Excel compatibility
-    });
-    
-    const csv = parser.parse(transactions);
+    let rowIndex = 1;
 
-    res.header("Content-Type", "text/csv; charset=utf-8");
-    res.attachment(`MyGajanji_Financial_Report_${from}_to_${to}.csv`);
-    res.send(csv);
+    // === TITLE SECTION ===
+    worksheet.mergeCells(`A${rowIndex}:E${rowIndex}`);
+    worksheet.getCell(`A${rowIndex}`).value = 'Financial Report';
+    worksheet.getCell(`A${rowIndex}`).style = titleStyle;
+    rowIndex++;
+
+    worksheet.mergeCells(`A${rowIndex}:E${rowIndex}`);
+    worksheet.getCell(`A${rowIndex}`).value = 'Personal Money Management';
+    worksheet.getCell(`A${rowIndex}`).style = subtitleStyle;
+    rowIndex += 2;
+
+    // === REPORT INFO ===
+    worksheet.mergeCells(`A${rowIndex}:E${rowIndex}`);
+    worksheet.getCell(`A${rowIndex}`).value = 'Report Information';
+    worksheet.getCell(`A${rowIndex}`).style = summaryHeaderStyle;
+    rowIndex++;
+
+    worksheet.getCell(`A${rowIndex}`).value = 'Report Period:';
+    worksheet.getCell(`A${rowIndex}`).font = { bold: true };
+    worksheet.getCell(`B${rowIndex}`).value = `${formatDate(from)} to ${formatDate(to)}`;
+    rowIndex++;
+
+    worksheet.getCell(`A${rowIndex}`).value = 'Generated For:';
+    worksheet.getCell(`A${rowIndex}`).font = { bold: true };
+    worksheet.getCell(`B${rowIndex}`).value = user.name;
+    rowIndex++;
+
+    worksheet.getCell(`A${rowIndex}`).value = 'Email:';
+    worksheet.getCell(`A${rowIndex}`).font = { bold: true };
+    worksheet.getCell(`B${rowIndex}`).value = user.email;
+    rowIndex += 2;
+
+    // === FINANCIAL SUMMARY ===
+    worksheet.mergeCells(`A${rowIndex}:E${rowIndex}`);
+    worksheet.getCell(`A${rowIndex}`).value = 'Financial Summary';
+    worksheet.getCell(`A${rowIndex}`).style = summaryHeaderStyle;
+    rowIndex++;
+
+    worksheet.getCell(`A${rowIndex}`).value = 'Total Income:';
+    worksheet.getCell(`A${rowIndex}`).style = incomeStyle;
+    worksheet.getCell(`B${rowIndex}`).value = totalIncome;
+    worksheet.getCell(`B${rowIndex}`).numFmt = '"Rs." #,##0.00';
+    rowIndex++;
+
+    worksheet.getCell(`A${rowIndex}`).value = 'Total Expense:';
+    worksheet.getCell(`A${rowIndex}`).style = expenseStyle;
+    worksheet.getCell(`B${rowIndex}`).value = totalExpense;
+    worksheet.getCell(`B${rowIndex}`).numFmt = '"Rs." #,##0.00';
+    rowIndex++;
+
+    worksheet.getCell(`A${rowIndex}`).value = 'Net Balance:';
+    worksheet.getCell(`A${rowIndex}`).font = { bold: true };
+    worksheet.getCell(`B${rowIndex}`).value = netBalance;
+    worksheet.getCell(`B${rowIndex}`).numFmt = '"Rs." #,##0.00';
+    worksheet.getCell(`B${rowIndex}`).font = { 
+      bold: true, 
+      color: { argb: netBalance >= 0 ? 'FF16A34A' : 'FFDC2626' } 
+    };
+    rowIndex += 2;
+
+    // === TRANSACTIONS HEADER ===
+    if (transactions.length > 0) {
+      worksheet.mergeCells(`A${rowIndex}:E${rowIndex}`);
+      worksheet.getCell(`A${rowIndex}`).value = `All Transactions (${transactions.length})`;
+      worksheet.getCell(`A${rowIndex}`).style = summaryHeaderStyle;
+      rowIndex++;
+
+      // Table headers
+      const headers = ['Amount', 'Category', 'Type', 'Date', 'Description'];
+      headers.forEach((header, index) => {
+        const cell = worksheet.getCell(`${String.fromCharCode(65 + index)}${rowIndex}`);
+        cell.value = header;
+        cell.style = dataHeaderStyle;
+      });
+      rowIndex++;
+
+      // Transaction data
+      transactions.forEach(transaction => {
+        worksheet.getCell(`A${rowIndex}`).value = transaction.amount;
+        worksheet.getCell(`A${rowIndex}`).numFmt = '"Rs." #,##0.00';
+        
+        worksheet.getCell(`B${rowIndex}`).value = transaction.category;
+        
+        worksheet.getCell(`C${rowIndex}`).value = transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1);
+        worksheet.getCell(`C${rowIndex}`).font = { 
+          color: { argb: transaction.type === 'income' ? 'FF16A34A' : 'FFDC2626' } 
+        };
+        
+        worksheet.getCell(`D${rowIndex}`).value = formatDate(transaction.date);
+        worksheet.getCell(`E${rowIndex}`).value = transaction.description || '';
+        
+        // Add borders to data cells
+        ['A', 'B', 'C', 'D', 'E'].forEach(col => {
+          worksheet.getCell(`${col}${rowIndex}`).border = {
+            top: { style: 'thin' },
+            left: { style: 'thin' },
+            bottom: { style: 'thin' },
+            right: { style: 'thin' }
+          };
+        });
+        
+        rowIndex++;
+      });
+    } else {
+      worksheet.mergeCells(`A${rowIndex}:E${rowIndex}`);
+      worksheet.getCell(`A${rowIndex}`).value = 'No transactions found for this period';
+      worksheet.getCell(`A${rowIndex}`).style = { 
+        font: { italic: true, color: { argb: 'FF94A3B8' } },
+        alignment: { horizontal: 'center' }
+      };
+      rowIndex++;
+    }
+
+    // Set response headers
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    res.setHeader('Content-Disposition', `attachment; filename=MyGajanji_Financial_Report_${from}_to_${to}.xlsx`);
+
+    // Write workbook to response
+    await workbook.xlsx.write(res);
+    res.end();
+
   } catch (error) {
-    console.error("CSV generation failed:", error);
-    res.status(500).json({ success: false, message: "CSV generation failed" });
+    console.error("Excel generation failed:", error);
+    res.status(500).json({ success: false, message: "Excel generation failed" });
   }
 };
