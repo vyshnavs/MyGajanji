@@ -15,6 +15,7 @@ import AddTransaction from "../pages/AddTransaction";
 import CategoryManagement from "../pages/CategoryManagement";
 import About from "../pages/About";
 import Reports from "../pages/Reports";
+import Profile from "../pages/Profile";
 
 
 function AppRouter() {
@@ -84,6 +85,14 @@ function AppRouter() {
           element={
             <RouteWrapper protect={true}>
               <Reports />
+            </RouteWrapper>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <RouteWrapper protect={true}>
+              <Profile />
             </RouteWrapper>
           }
         />
