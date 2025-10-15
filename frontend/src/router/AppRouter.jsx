@@ -15,7 +15,12 @@ import AddTransaction from "../pages/AddTransaction";
 import CategoryManagement from "../pages/CategoryManagement";
 import About from "../pages/About";
 import Reports from "../pages/Reports";
+<<<<<<< HEAD
 import EditTransaction from "../pages/EditTransaction";
+=======
+import Profile from "../pages/Profile";
+
+>>>>>>> 5423d671d7b9f77a7729bd3726437af2e14e45e0
 
 function AppRouter() {
   const [showSplash, setShowSplash] = useState(false);
@@ -88,6 +93,7 @@ function AppRouter() {
           }
         />
         <Route
+<<<<<<< HEAD
           path="/transaction/edit/:id"
           element={
             <RouteWrapper protect={true}>
@@ -96,6 +102,15 @@ function AppRouter() {
           }
         />
 
+=======
+          path="/profile"
+          element={
+            <RouteWrapper protect={true}>
+              <Profile />
+            </RouteWrapper>
+          }
+        />
+>>>>>>> 5423d671d7b9f77a7729bd3726437af2e14e45e0
       </Routes>
     </Router>
   );
