@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Home, ChevronLeft, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import SanjayImg from "../assets/sanjayimg.jpg";
+import VyshnavImg from "../assets/vyshnavimg.png";
+import SandraImg from "../assets/sandraimg.jpg";
+import GouriImg from "../assets/gouripriyaimg.jpg";
 
 export default function AboutPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -9,30 +13,26 @@ export default function AboutPage() {
     {
       id: 1,
       name: "Vyshnav S",
-      role: "Developer",
-      image:
-        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg",
+      role: "Electrical Engineering student",
+      image: VyshnavImg,
     },
     {
       id: 2,
-      name: "Sanjay",
-      role: "Developer",
-      image:
-        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg",
+      name: "Sanjay P S",
+      role: "Mechanical Engineering student",
+      image: SanjayImg,
     },
     {
       id: 3,
       name: "Sandra",
-      role: "Developer",
-      image:
-        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg",
+      role: "Civil Engineering student",
+      image: SandraImg,
     },
     {
       id: 4,
       name: "Gouri Priya",
-      role: "Developer",
-      image:
-        "https://images.rawpixel.com/image_800/cHJpdmF0ZS9sci9pbWFnZXMvd2Vic2l0ZS8yMDI1LTA4L3NyLWltYWdlLTE5MDgyNS1uZy1zLTQwMC5qcGc.jpg",
+      role: "Production Engineering student",
+      image: GouriImg,
     },
   ];
 
@@ -159,7 +159,7 @@ export default function AboutPage() {
                         <img
                           src={member.image}
                           alt={member.name}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover filter grayscale"
                         />
                       </div>
 

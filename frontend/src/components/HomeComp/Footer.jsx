@@ -27,8 +27,8 @@ const Footer = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
         >
           <h2 className="text-xl font-bold text-blue-400 mb-4">Contact Us</h2>
-          <p className="text-gray-300 text-sm">Email: support@moneywise.com</p>
-          <p className="text-gray-300 text-sm">Phone: +91 98765 43210</p>
+          <p className="text-gray-300 text-sm">Email: mygajanjiofficial@gmail.com</p>
+          <p className="text-gray-300 text-sm">Phone: +91 xxxxxxxxxx</p>
         </motion.div>
 
         {/* Drive and GitHub Icons */}
@@ -39,10 +39,10 @@ const Footer = () => {
         >
           <h2 className="text-xl font-bold text-blue-400 mb-4">Links</h2>
           <div className="flex gap-4">
-            <a href="YOUR_DRIVE_LINK" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition">
+            <a href="https://drive.google.com/drive/folders/1rntibDwUFA4CLrOWWTeDJVUIglvuRDmW?usp=drive_link" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition">
               <Cloud size={24} />
             </a>
-            <a href="YOUR_GITHUB_LINK" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition">
+            <a href="https://github.com/your-repohttps://github.com/vyshnavs/MyGajanji" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition">
               <Github size={24} />
             </a>
           </div>
