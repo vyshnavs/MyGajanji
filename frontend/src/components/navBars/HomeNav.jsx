@@ -74,6 +74,7 @@ const Navbar = () => {
         <a href="/addtransaction" className="hover:text-blue-300">Add Transaction</a>
         <a href="/category" className="hover:text-blue-300">Category</a>
         <a href="/reports" className="hover:text-blue-300">Reports</a>
+        <a href="/budgets" className="hover:text-blue-300">Budgets</a>
 
         {!user ? (
           <a

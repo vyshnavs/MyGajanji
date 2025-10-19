@@ -1,10 +1,16 @@
+import os
+from dotenv import load_dotenv
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 import requests
 from datetime import datetime
 
-# Base backend URL
-API_URL = "http://localhost:5000/api/transactions"
+# Load environment variables from .env
+load_dotenv()
+
+# Base backend URL and default token from .env
+API_URL = os.getenv("API_URL", "http://localhost:5000/api/transactions")
+DEFAULT_TOKEN = os.getenv("DEFAULT_TOKEN", "")
 
 
 def get_period(slot_value):
@@ -25,6 +31,10 @@ def get_token(tracker: Tracker):
     token = tracker.get_slot("auth_token")
     if not token:
         token = tracker.latest_message.get("metadata", {}).get("token")
+
+    # Use default token from .env if not provided
+    if not token:
+        token = DEFAULT_TOKEN
 
     # Remove 'Bearer ' prefix if present
     if token and token.lower().startswith("bearer "):

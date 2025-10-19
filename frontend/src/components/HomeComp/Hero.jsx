@@ -34,16 +34,6 @@ const HeroSection = () => {
             Track your spending, save more, and manage budgets seamlessly with{" "}
             <span className="font-semibold text-blue-300">MyGajanji</span>.
           </p>
-          <div className="flex items-center gap-4">
-            <input
-              type="text"
-              placeholder="Search your expenses..."
-              className="px-4 py-2 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 w-full max-w-sm"
-            />
-            <button className="bg-blue-600 hover:bg-blue-500 p-2 rounded-lg">
-              <Search className="text-white" />
-            </button>
-          </div>
         </motion.div>
       </div>
 

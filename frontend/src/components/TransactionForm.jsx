@@ -11,6 +11,61 @@ export default function TransactionForm({ onSuccess }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Category suggestions based on transaction type
+  const categorySuggestions = {
+    expense: [
+      "Groceries",
+      "Dining",
+      "Transportation",
+      "Fuel",
+      "Utilities",
+      "Rent",
+      "Mortgage",
+      "Entertainment",
+      "Shopping",
+      "Healthcare",
+      "Insurance",
+      "Education",
+      "Travel",
+      "Gifts",
+      "Personal Care",
+      "Subscriptions",
+      "Bills",
+      "Home Maintenance",
+      "Car Maintenance",
+      "Clothing",
+      "Electronics",
+      "Hobbies",
+      "Fitness",
+      "Pets",
+      "Childcare"
+    ],
+    income: [
+      "Salary",
+      "Freelance",
+      "Business",
+      "Investments",
+      "Dividends",
+      "Rental Income",
+      "Bonus",
+      "Commission",
+      "Side Hustle",
+      "Gifts",
+      "Refund",
+      "Interest",
+      "Royalties",
+      "Pension",
+      "Social Security",
+      "Scholarship",
+      "Grant",
+      "Lottery",
+      "Sale",
+      "Tips"
+    ]
+  };
+
+  const currentSuggestions = categorySuggestions[type];
+
   const validate = () => {
     if (!amount || Number(amount) <= 0) return "Please enter a valid amount";
     if (!category) return "Please enter a category";
@@ -79,7 +134,7 @@ export default function TransactionForm({ onSuccess }) {
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
-            className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700 focus:outline-none"
+            className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
           >
             <option value="expense">Expense</option>
             <option value="income">Income</option>
@@ -94,9 +149,33 @@ export default function TransactionForm({ onSuccess }) {
           <input
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700"
+            list={`${type}-categories`}
+            className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
             placeholder="e.g., Groceries, Salary, Bills"
           />
+          <datalist id={`${type}-categories`}>
+            {currentSuggestions.map((suggestion) => (
+              <option key={suggestion} value={suggestion} />
+            ))}
+          </datalist>
+          
+          {/* Quick category buttons */}
+          <div className="mt-2 flex flex-wrap gap-1">
+            {currentSuggestions.slice(0, 5).map((suggestion) => (
+              <button
+                key={suggestion}
+                type="button"
+                onClick={() => setCategory(suggestion)}
+                className={`px-2 py-1 text-xs rounded-md transition ${
+                  category === suggestion 
+                    ? 'bg-red-600 text-white' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                {suggestion}
+              </button>
+            ))}
+          </div>
         </div>
 
         <div>
@@ -105,7 +184,7 @@ export default function TransactionForm({ onSuccess }) {
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700"
+            className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
           />
         </div>
 
@@ -114,7 +193,7 @@ export default function TransactionForm({ onSuccess }) {
           <select
             value={method}
             onChange={(e) => setMethod(e.target.value)}
-            className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700"
+            className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-red-500 transition"
           >
             <option value="cash">Cash</option>
             <option value="card">Card</option>
@@ -133,7 +212,7 @@ export default function TransactionForm({ onSuccess }) {
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={3}
-          className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700 resize-none"
+          className="w-full p-3 rounded-xl bg-gray-900 border border-gray-700 resize-none focus:outline-none focus:ring-2 focus:ring-red-500 transition"
           placeholder="Notes about this transaction"
         />
       </div>

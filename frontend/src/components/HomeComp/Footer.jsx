@@ -1,13 +1,7 @@
 // components/Footer.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
-import {
-  Facebook,
-  Instagram,
-  Twitter,
-  Linkedin,
-  Mail,
-} from 'lucide-react';
+import { Github, Cloud } from 'lucide-react'; // Using Cloud for Drive
 
 const Footer = () => {
   return (
@@ -37,28 +31,19 @@ const Footer = () => {
           <p className="text-gray-300 text-sm">Phone: +91 98765 43210</p>
         </motion.div>
 
-        {/* Social Media Icons */}
+        {/* Drive and GitHub Icons */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
         >
-          <h2 className="text-xl font-bold text-blue-400 mb-4">Follow Us</h2>
+          <h2 className="text-xl font-bold text-blue-400 mb-4">Links</h2>
           <div className="flex gap-4">
-            <a href="#" className="hover:text-blue-400 transition">
-              <Facebook size={24} />
+            <a href="YOUR_DRIVE_LINK" target="_blank" rel="noopener noreferrer" className="hover:text-green-400 transition">
+              <Cloud size={24} />
             </a>
-            <a href="#" className="hover:text-pink-400 transition">
-              <Instagram size={24} />
-            </a>
-            <a href="#" className="hover:text-sky-400 transition">
-              <Twitter size={24} />
-            </a>
-            <a href="#" className="hover:text-blue-500 transition">
-              <Linkedin size={24} />
-            </a>
-            <a href="mailto:support@moneywise.com" className="hover:text-red-400 transition">
-              <Mail size={24} />
+            <a href="YOUR_GITHUB_LINK" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition">
+              <Github size={24} />
             </a>
           </div>
         </motion.div>
@@ -78,3 +63,4 @@ const Footer = () => {
 };
 
 export default Footer;
+

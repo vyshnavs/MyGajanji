@@ -10,6 +10,8 @@ const transactionRoutes = require('./routes/transactionRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const reportRoutes=require('./routes/reportRoutes');
 const profileRoutes = require('./routes/profileRoutes');
+const budgetRoutes = require('./routes/budgetRoutes');
+
 dotenv.config();
 connectDB();
 
@@ -30,6 +32,7 @@ app.use('/api/transactions', transactionRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/reports', reportRoutes);
 app.use('/api/profile', profileRoutes);
+app.use('/api/budgets',budgetRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

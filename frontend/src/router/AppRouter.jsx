@@ -17,6 +17,7 @@ import About from "../pages/About";
 import Reports from "../pages/Reports";
 import EditTransaction from "../pages/EditTransaction";
 import Profile from "../pages/Profile";
+import Budgets from "../pages/Budgets";
 
 
 function AppRouter() {
@@ -102,6 +103,14 @@ function AppRouter() {
           element={
             <RouteWrapper protect={true}>
               <Profile />
+            </RouteWrapper>
+          }
+        />
+        <Route
+          path="/budgets"
+          element={
+            <RouteWrapper protect={true}>
+              <Budgets />
             </RouteWrapper>
           }
         />
