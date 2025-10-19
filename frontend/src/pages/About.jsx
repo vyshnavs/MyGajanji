@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Home, ChevronLeft, ChevronRight } from "lucide-react";
+import { Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import SanjayImg from "../assets/sanjayimg.jpg";
 import VyshnavImg from "../assets/vyshnavimg.png";
@@ -121,22 +121,22 @@ export default function AboutPage() {
       </div>
 
       {/* Team Carousel Section */}
-      <div className="max-w-7xl mx-auto px-4 py-16">
+      <div className="max-w-7xl mx-auto px-4 md:px-20 py-16 overflow-hidden">
         <h2 className="text-4xl font-bold text-white text-center mb-16">
           Meet Our Team
         </h2>
 
         <div className="relative flex items-center justify-center min-h-96">
           {/* Carousel Container */}
-          <div className="w-full flex items-center justify-center perspective px-20">
+          <div className="w-full flex items-center justify-center">
             <div
               className="relative w-full h-80 flex items-center justify-center"
               style={{ perspective: "1200px" }}
             >
               {getVisibleMembers().map((member) => {
                 const offset = member.offset;
-                const angle = offset * 100; // 90 degrees between each member
-                const radius = 280; // Distance from center
+                const angle = offset * 100;
+                const radius = 280;
 
                 return (
                   <div
@@ -147,11 +147,10 @@ export default function AboutPage() {
                     style={{
                       transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
                       perspective: "1000px",
-                      opacity: offset === 0 ? 1 : 0.3, // <-- center full, sides 30%
+                      opacity: offset === 0 ? 1 : 0.3,
                     }}
                   >
                     <div className="flex flex-col items-center">
-                      {/* Member photo */}
                       <div
                         className="relative w-64 h-64 rounded-2xl overflow-hidden shadow-2xl border-4 border-red-500"
                         style={{ backfaceVisibility: "hidden" }}
@@ -163,7 +162,6 @@ export default function AboutPage() {
                         />
                       </div>
 
-                      {/* Only show text for center member */}
                       {offset === 0 && (
                         <div className="mt-6 text-center transition-opacity duration-500">
                           <h3 className="text-2xl font-bold text-white mb-1">
