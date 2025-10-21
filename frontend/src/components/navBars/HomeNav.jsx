@@ -196,6 +196,7 @@ const Navbar = () => {
             <button onClick={() => handleNavClick("/addtransaction")} className="hover:text-blue-300 text-left">Add Transaction</button>
             <button onClick={() => handleNavClick("/category")} className="hover:text-blue-300 text-left">Category</button>
             <button onClick={() => handleNavClick("/reports")} className="hover:text-blue-300 text-left">Reports</button>
+            <button onClick={() => handleNavClick("/budgets")} className="hover:text-blue-300 text-left">Budgets</button>
           </div>
         </div>
       )}
