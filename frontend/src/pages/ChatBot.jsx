@@ -335,7 +335,7 @@ const Chatbot = () => {
   return (
     <div className="min-h-screen flex  relative bg-animated">
       {/* Fixed Header */}
-      <div className="fixed top-0 left-4 right-4 h-16 flex items-center px-4 border-b border-[#2F3B43] bg-[#111B21] z-50">
+      <div className="fixed top-0  h-16 flex items-center px-4 border-b border-[#2F3B43] bg-[#111B21] z-50">
         <div className="flex items-center justify-between w-full max-w-7xl mx-auto">
           {/* Left side - Home button, Calendar, and Title */}
           <div className="flex items-center space-x-3">
