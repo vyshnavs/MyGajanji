@@ -252,51 +252,49 @@ const Help = () => {
           </div>
         )}
 
-        {/* Contact Support Section */}
-        <div className={`transform transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`} style={{ transitionDelay: '700ms' }}>
-          <div className="relative group">
-            <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-            <div className="relative bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-blue-500/20 hover:border-cyan-400/30 transition-all duration-500 group-hover:shadow-cyan-500/10">
-              <div className="text-center mb-2">
-                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/20">
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
-                  </svg>
-                </div>
-                <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
-                  Still need help?
-                </h2>
-                <p className="text-blue-100/80 mt-2 max-w-md mx-auto">
-                  Can't find what you're looking for? Our support team is here to help you get back on track.
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center mt-6">
-                <button className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 font-semibold shadow-2xl hover:shadow-cyan-500/25 flex items-center justify-center gap-3 group">
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192L5.636 18.364" />
-                  </svg>
-                  Contact Support
-                </button>
-                <button className="px-8 py-3 border border-cyan-400/50 text-cyan-300 hover:bg-cyan-900/20 hover:border-cyan-300/70 rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 font-semibold flex items-center justify-center gap-3 group">
-                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                  </svg>
-                  Send Email
-                </button>
-              </div>
-              <div className="text-center mt-6">
-                <p className="text-blue-200/60 text-sm">
-                  Typically replies within 2 hours
-                </p>
-              </div>
-            </div>
-          </div>
+    {/* Contact Support Section */}
+<div className={`transform transition-all duration-700 ${mounted ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'}`} style={{ transitionDelay: '700ms' }}>
+  <div className="relative group">
+    <div className="absolute -inset-1 bg-gradient-to-r from-blue-500 via-cyan-500 to-indigo-500 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+    <div className="relative bg-gradient-to-br from-gray-800/80 to-gray-900/80 backdrop-blur-xl rounded-2xl shadow-2xl p-8 border border-blue-500/20 hover:border-cyan-400/30 transition-all duration-500 group-hover:shadow-cyan-500/10">
+      <div className="text-center mb-2">
+        <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/20">
+          <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+          </svg>
         </div>
+        <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-300 to-blue-300 bg-clip-text text-transparent">
+          Still need help?
+        </h2>
+        <p className="text-blue-100/80 mt-2 max-w-md mx-auto">
+          Can't find what you're looking for? Our support team is here to help you get back on track.
+        </p>
+      </div>
+      <div className="flex justify-center mt-6">
+        <button 
+         onClick={() => window.open('https://mail.google.com/mail/?view=cm&fs=1&to=mygajanjiofficial@gmail.com')}
+
+          className="px-8 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 font-semibold shadow-2xl hover:shadow-cyan-500/25 flex items-center justify-center gap-3 group"
+        >
+          <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Send Email
+        </button>
+      </div>
+      <div className="text-center mt-6">
+        <p className="text-blue-200/60 text-sm">
+          Typically replies within 2 hours
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
 
         {/* Footer Note */}
         <div className="text-center mt-12">
           <p className="text-blue-300/50 text-sm">
-            Need immediate assistance? Call us at <span className="text-cyan-300 font-semibold">1-800-HELP-NOW</span>
+            Need immediate assistance? Call us at <span className="text-cyan-300 font-semibold">+91-XXXXXXXXXX</span>
           </p>
         </div>
       </div>
